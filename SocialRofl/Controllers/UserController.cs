@@ -41,10 +41,7 @@ namespace SocialRofl.Controllers
 
         [Authorize]
         [HttpGet("users/info")]
-        public IActionResult GetUserInfo()
-        {
-            return GetUserInfo(User.GetId());
-        }
+        public IActionResult GetUserInfo() => GetUserInfo(User.GetId());
 
         [HttpGet("users/info/{userId}")]
         public IActionResult GetUserInfo(int userId)

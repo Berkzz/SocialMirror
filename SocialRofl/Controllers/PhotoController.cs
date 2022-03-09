@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MlkPwgen;
 using SocialRofl.Data;
 using SocialRofl.Extensions;
+using SocialRofl.Logic;
 using SocialRofl.Models;
 using SocialRofl.Models.Database;
 
@@ -13,11 +14,13 @@ namespace SocialRofl.Controllers
     public class PhotoController : ControllerBase
     {
         private DataContext _db;
+        private PhotoUploader _uploader;
         private string[] _allowedExtensions = new[] { ".png", ".jpg", ".jpeg", ".bmp" };
 
-        public PhotoController(DataContext db)
+        public PhotoController(DataContext db, PhotoUploader uploader)
         {
             _db = db;
+            _uploader = uploader;
         }
 
         [Authorize]
@@ -36,13 +39,7 @@ namespace SocialRofl.Controllers
                     return BadRequest($"Only {string.Join(", ", _allowedExtensions)} extensions allowed");
                 }
                 var hash = PasswordGenerator.Generate(length: 16, allowed: Sets.Alphanumerics);
-                string path = $"{Environment.CurrentDirectory}/Photos/{hash}.jpeg";
-                if(!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory($"{Environment.CurrentDirectory}/Photos");
-                }
-                using var fileStream = new FileStream(path, FileMode.Create);
-                file.CopyTo(fileStream);
+                _uploader.Upload(hash, file);
                 _db.Photos.Add(new Photo { Description = description, Hash = hash, User = User.GetUser(_db) });
                 _db.SaveChanges();
                 return Ok(new PhotoUploadResult { Hash = hash });
@@ -74,19 +71,7 @@ namespace SocialRofl.Controllers
 
         [Authorize]
         [HttpGet("photos/getall")]
-        public IActionResult GetUserPhotos()
-        {
-            try
-            {
-                _db.Entry(User.GetUser(_db)).Collection(x => x.Photos).Load();
-                var photos = User.GetUser(_db).Photos.Select(x => x.Hash).ToList();
-                return Ok(new AllPhotos { Hashes = photos });
-            }
-            catch
-            {
-                return new StatusCodeResult(500);
-            }
-        }
+        public IActionResult GetUserPhotos() => GetUserPhotos(User.GetId());
 
         [Authorize]
         [HttpGet("photos/getall/{userId}")]

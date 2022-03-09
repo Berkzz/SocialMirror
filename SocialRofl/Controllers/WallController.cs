@@ -52,6 +52,58 @@ namespace SocialRofl.Controllers
         }
 
         [Authorize]
+        [HttpGet("post/user")]
+        public IActionResult GetPosts(int start = 0, int count = 10) => GetPosts(User.GetId(), start, count);
+
+        [HttpGet("post/user/{id}")]
+        public IActionResult GetPosts(int id, int start = 0, int count = 10)
+        {
+            try
+            {
+                var posts = _db.Posts.Where(x => x.OwnerId == id).Skip(start).Take(count);
+                return Ok(posts.Select(x => new PostModel
+                {
+                    Text = x.Text,
+                    Attachments = x.Attachments.Select(y => new AttachmentModel
+                    {
+                        Hash = y.AttachmentHash,
+                        Type = y.Type
+                    })
+                }));
+            }
+            catch
+            {
+                return new StatusCodeResult(500);
+            }
+        }
+
+        [HttpGet("post/{id}")]
+        public IActionResult GetPost(int id)
+        {
+            try
+            {
+                var post = _db.Posts.SingleOrDefault(x => x.Id == id);
+                if(post == null)
+                {
+                    return NotFound();
+                }
+                return Ok(new PostModel
+                {
+                    Text = post.Text,
+                    Attachments = post.Attachments.Select(x => new AttachmentModel
+                    {
+                        Hash = x.AttachmentHash,
+                        Type = x.Type
+                    })
+                });
+            }
+            catch
+            {
+                return new StatusCodeResult(500);
+            }
+        }
+
+        [Authorize]
         [HttpDelete("post/remove")]
         public IActionResult RemovePost(int postId)
         {

@@ -69,6 +69,7 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", options =>
 
 builder.Services.AddScoped<Logic.AttachmentChecker>();
 builder.Services.AddScoped<Logic.Auth>();
+builder.Services.AddScoped<Logic.PhotoUploader>();
 
 var app = builder.Build();
 
