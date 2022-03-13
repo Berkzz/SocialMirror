@@ -24,7 +24,7 @@ namespace SocialRofl.Controllers
         {
             try
             {
-                var photo = _db.Photos.SingleOrDefault(x => x.Hash == hash);
+                var photo = _db.Photos.SingleOrDefault(x => x.Hash == hash); // to logic
                 if(photo == null)
                 {
                     return NotFound();
@@ -48,7 +48,7 @@ namespace SocialRofl.Controllers
         {
             try
             {
-                var user = _db.Users.Where(x => x.Id == userId).Include(x => x.MainPhoto).FirstOrDefault();
+                var user = _db.Users.Where(x => x.Id == userId).Include(x => x.MainPhoto).FirstOrDefault(); // to logic
                 if(user == null)
                 {
                     return NotFound();

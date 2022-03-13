@@ -40,7 +40,7 @@ namespace SocialRofl.Controllers
                 }
                 var hash = PasswordGenerator.Generate(length: 16, allowed: Sets.Alphanumerics);
                 _uploader.Upload(hash, file);
-                _db.Photos.Add(new Photo { Description = description, Hash = hash, User = User.GetUser(_db) });
+                _db.Photos.Add(new Photo { Description = description, Hash = hash, User = User.GetUser(_db) }); // to logic
                 _db.SaveChanges();
                 return Ok(new PhotoUploadResult { Hash = hash });
             }
@@ -60,7 +60,7 @@ namespace SocialRofl.Controllers
                 {
                     return NotFound();
                 }
-                var image = System.IO.File.OpenRead(@$"{Environment.CurrentDirectory}/Photos/{hash}.jpeg");
+                var image = System.IO.File.OpenRead(@$"{Environment.CurrentDirectory}/Photos/{hash}.jpeg"); // to logic
                 return File(image, "image/jpeg");
             }
             catch
@@ -84,7 +84,7 @@ namespace SocialRofl.Controllers
                 {
                     return NotFound();
                 }
-                _db.Entry(user).Collection(x => x.Photos).Load();
+                _db.Entry(user).Collection(x => x.Photos).Load(); // to logic
                 var photos = user.Photos.Select(x => x.Hash).ToList();
                 return Ok(new AllPhotos { Hashes = photos });
             }

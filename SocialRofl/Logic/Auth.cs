@@ -38,15 +38,16 @@ namespace SocialRofl.Logic
         public LoginResult Login(string userName, string password)
         {
             var user = _db.Users.SingleOrDefault(x => x.UserName == userName);
+            var badResult = new LoginResult { Success = false };
             if (user == null)
             {
-                return new LoginResult { Success = false };
+                return badResult;
             }
             if (_userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, password) == PasswordVerificationResult.Success)
             {
                 return new LoginResult { Success = true, Token = GenerateToken(user) };
             }
-            return new LoginResult { Success = false };
+            return badResult;
         }
 
         public string GenerateToken(User user)

@@ -32,7 +32,7 @@ namespace SocialRofl.Controllers
                     return NotFound();
                 }
                 _db.Entry(user).Collection(x => x.Following).Load();
-                _db.Entry(user).Collection(x => x.SubscribedTo).Load();
+                _db.Entry(user).Collection(x => x.SubscribedTo).Load(); // to logic
                 return Ok(user.Following.Intersect(user.SubscribedTo).Select(x => x.Id));
             }
             catch
@@ -53,7 +53,7 @@ namespace SocialRofl.Controllers
                     return NotFound();
                 }
                 var me = User.GetUser(_db);
-                _db.Entry(me).Collection(x => x.SubscribedTo).Load();
+                _db.Entry(me).Collection(x => x.SubscribedTo).Load(); // to logic
                 me.SubscribedTo.Add(user);
                 _db.SaveChanges();
                 return Ok();
@@ -76,7 +76,7 @@ namespace SocialRofl.Controllers
                     return NotFound();
                 }
                 var me = User.GetUser(_db);
-                _db.Entry(me).Collection(x => x.SubscribedTo).Load();
+                _db.Entry(me).Collection(x => x.SubscribedTo).Load(); // to logic
                 me.SubscribedTo.Remove(user);
                 _db.SaveChanges();
                 return Ok();

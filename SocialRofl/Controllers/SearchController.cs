@@ -20,7 +20,7 @@ namespace SocialRofl.Controllers
         {
             try
             {
-                var users = _db.Users.Where(x => x.UserName.Contains(username)).Take(10);
+                var users = _db.Users.Where(x => x.UserName.Contains(username)).Take(10); // to logic
                 return Ok(users.Select(x => new SearchUser
                 {
                     FirstName = x.FirstName,
@@ -40,7 +40,7 @@ namespace SocialRofl.Controllers
         {
             try
             {
-                var users = _db.Users.Where(x => (x.FirstName + " " + x.LastName).Contains(name)).Take(10);
+                var users = _db.Users.Where(x => (x.FirstName + " " + x.LastName).Contains(name)).Take(10); // to logic
                 return Ok(users.Select(x => new SearchUser
                 {
                     FirstName = x.FirstName,

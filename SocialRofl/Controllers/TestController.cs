@@ -31,5 +31,11 @@ namespace SocialRofl.Controllers
             var user = _db.Users.SingleOrDefault(x => x.Id == User.GetId());
             return user == null ? NotFound() : Ok(user);
         }
+
+        [HttpGet("throwexception")]
+        public IActionResult ThrowException()
+        {
+            throw new Exception("Test exception");
+        }
     }
 }

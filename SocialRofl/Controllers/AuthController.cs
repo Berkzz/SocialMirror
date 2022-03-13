@@ -16,13 +16,37 @@ namespace SocialRofl.Controllers
         [HttpPost("register")]
         public IActionResult Register(Register register)
         {
-            return Ok(_logic.Create(register));
+            try
+            {
+                var result = _logic.Create(register);
+                if(!result.Success)
+                {
+                    return BadRequest(result);
+                }
+                return Ok(result);
+            }
+            catch
+            {
+                return StatusCode(500);
+            }
         }
 
         [HttpPost("login")]
         public IActionResult Login(Login login)
         {
-            return Ok(_logic.Login(login.UserName, login.Password));
+            try
+            {
+                var result = _logic.Login(login.UserName, login.Password);
+                if(!result.Success)
+                {
+                    return BadRequest(result);
+                }
+                return Ok(result);
+            }
+            catch
+            {
+                return StatusCode(500);
+            }
         }
     }
 }

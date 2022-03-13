@@ -17,7 +17,7 @@ namespace SocialRofl.Controllers
 
         public WallController(DataContext db, AttachmentChecker checker)
         {
-            _db = db;
+            _db = db; // db cant be in controller
             _checker = checker;
         }
 
@@ -41,7 +41,7 @@ namespace SocialRofl.Controllers
                     OwnerId = User.GetId(),
                     Text = post.Text
                 };
-                _db.Posts.Add(dbPost);
+                _db.Posts.Add(dbPost); // to logic
                 _db.SaveChanges();
                 return Ok();
             } 
@@ -60,7 +60,7 @@ namespace SocialRofl.Controllers
         {
             try
             {
-                var posts = _db.Posts.Where(x => x.OwnerId == id).Skip(start).Take(count);
+                var posts = _db.Posts.Where(x => x.OwnerId == id).Skip(start).Take(count); // to logic
                 return Ok(posts.Select(x => new PostModel
                 {
                     Text = x.Text,
@@ -118,7 +118,7 @@ namespace SocialRofl.Controllers
                 {
                     return Unauthorized();
                 }
-                _db.Posts.Remove(post);
+                _db.Posts.Remove(post); // to logic
                 _db.SaveChanges();
                 return Ok();
             }

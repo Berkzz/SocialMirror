@@ -15,7 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "MyProject", Version = "v1.0.0" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "SocialRofl", Version = "v1.0.0" });
 
     var securitySchema = new OpenApiSecurityScheme
     {
@@ -84,6 +84,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseExceptionHandler("/error");
 
 app.MapControllers();
 
