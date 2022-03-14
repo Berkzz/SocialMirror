@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using SocialRofl.Interfaces;
 
 namespace SocialRofl.Controllers
 {
@@ -14,9 +15,14 @@ namespace SocialRofl.Controllers
             var context = HttpContext.Features.Get<IExceptionHandlerFeature>();
             var exception = context.Error;
 
-            // .. todo
+            if(exception is ILogicException ex)
+            {
+                return ex.GetActionResult();
+            } else
+            {
+                return StatusCode(500);
+            }
 
-            return StatusCode(500, exception);
         }
     }
 }

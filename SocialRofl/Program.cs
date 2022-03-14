@@ -2,16 +2,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SocialRofl.Data;
+using SocialRofl.Interfaces;
 using SocialRofl.Models.Database;
 using System.Text;
 using Logic = SocialRofl.Logic;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -69,11 +67,15 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", options =>
 
 builder.Services.AddScoped<Logic.AttachmentChecker>();
 builder.Services.AddScoped<Logic.Auth>();
-builder.Services.AddScoped<Logic.PhotoUploader>();
+builder.Services.AddScoped<Logic.PhotoLogic>();
+builder.Services.AddScoped<Logic.FriendsLogic>();
+builder.Services.AddScoped<Logic.SearchLogic>();
+builder.Services.AddScoped<Logic.UserLogic>();
+builder.Services.AddScoped<Logic.WallLogic>();
+builder.Services.AddScoped<IHashGenerator, Logic.HashGenerator>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

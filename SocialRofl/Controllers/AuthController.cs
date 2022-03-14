@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SocialRofl.Logic;
 using SocialRofl.Models;
 
 namespace SocialRofl.Controllers
@@ -6,9 +7,9 @@ namespace SocialRofl.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private Logic.Auth _logic;
+        private Auth _logic;
 
-        public AuthController(Logic.Auth logic)
+        public AuthController(Auth logic)
         {
             _logic = logic;
         }
@@ -16,37 +17,14 @@ namespace SocialRofl.Controllers
         [HttpPost("register")]
         public IActionResult Register(Register register)
         {
-            try
-            {
-                var result = _logic.Create(register);
-                if(!result.Success)
-                {
-                    return BadRequest(result);
-                }
-                return Ok(result);
-            }
-            catch
-            {
-                return StatusCode(500);
-            }
+            _logic.Create(register);
+            return Ok();
         }
 
         [HttpPost("login")]
         public IActionResult Login(Login login)
         {
-            try
-            {
-                var result = _logic.Login(login.UserName, login.Password);
-                if(!result.Success)
-                {
-                    return BadRequest(result);
-                }
-                return Ok(result);
-            }
-            catch
-            {
-                return StatusCode(500);
-            }
+            return Ok(_logic.Login(login.UserName, login.Password));
         }
     }
 }

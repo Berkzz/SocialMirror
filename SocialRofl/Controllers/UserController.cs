@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SocialRofl.Data;
 using SocialRofl.Extensions;
+using SocialRofl.Logic;
 using SocialRofl.Models;
 
 namespace SocialRofl.Controllers
@@ -11,32 +12,19 @@ namespace SocialRofl.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private DataContext _db;
+        private UserLogic _logic;
 
-        public UserController(DataContext db)
+        public UserController(UserLogic logic)
         {
-            _db = db;
+            _logic = logic;
         }
 
         [Authorize]
         [HttpPut("users/setphoto")]
         public IActionResult SetMainPhoto(string hash)
         {
-            try
-            {
-                var photo = _db.Photos.SingleOrDefault(x => x.Hash == hash); // to logic
-                if(photo == null)
-                {
-                    return NotFound();
-                }
-                User.GetUser(_db).MainPhoto = photo;
-                _db.SaveChanges();
-                return Ok();
-            }
-            catch
-            {
-                return new StatusCodeResult(500);
-            }
+            _logic.SetMainPhoto(User.GetId(), hash);
+            return Ok();
         }
 
         [Authorize]
@@ -46,26 +34,7 @@ namespace SocialRofl.Controllers
         [HttpGet("users/info/{userId}")]
         public IActionResult GetUserInfo(int userId)
         {
-            try
-            {
-                var user = _db.Users.Where(x => x.Id == userId).Include(x => x.MainPhoto).FirstOrDefault(); // to logic
-                if(user == null)
-                {
-                    return NotFound();
-                }
-                return Ok(new UserView
-                {
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    MainPhoto = user.MainPhoto?.Hash,
-                    Birth = user.Birth,
-                    Username = user.UserName
-                });
-            }
-            catch
-            {
-                return new StatusCodeResult(500);
-            }
+            return Ok(_logic.GetUserInfo(userId));
         }
     }
 }

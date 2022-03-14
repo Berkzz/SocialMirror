@@ -1,18 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SocialRofl.Data;
 using SocialRofl.Extensions;
+using SocialRofl.Logic;
 
 namespace SocialRofl.Controllers
 {
     [ApiController]
     public class FriendsController : ControllerBase
     {
-        private DataContext _db;
+        private FriendsLogic _logic;
 
-        public FriendsController(DataContext db)
+        public FriendsController(FriendsLogic logic)
         {
-            _db = db;
+            _logic = logic;
         }
 
         [HttpGet("friends/list")]
@@ -24,67 +24,23 @@ namespace SocialRofl.Controllers
         [HttpGet("friends/list/{userId}")]
         public IActionResult List(int userId)
         {
-            try
-            {
-                var user = _db.Users.SingleOrDefault(x => x.Id == userId);
-                if(user == null)
-                {
-                    return NotFound();
-                }
-                _db.Entry(user).Collection(x => x.Following).Load();
-                _db.Entry(user).Collection(x => x.SubscribedTo).Load(); // to logic
-                return Ok(user.Following.Intersect(user.SubscribedTo).Select(x => x.Id));
-            }
-            catch
-            {
-                return new StatusCodeResult(500);
-            }
+            return Ok(_logic.GetFriendList(userId));
         }
 
         [Authorize]
         [HttpGet("friends/subscribe/{userId}")]
         public IActionResult Subscribe(int userId)
         {
-            try
-            {
-                var user = _db.Users.SingleOrDefault(x => x.Id == userId);
-                if (user == null)
-                {
-                    return NotFound();
-                }
-                var me = User.GetUser(_db);
-                _db.Entry(me).Collection(x => x.SubscribedTo).Load(); // to logic
-                me.SubscribedTo.Add(user);
-                _db.SaveChanges();
-                return Ok();
-            }
-            catch
-            {
-                return new StatusCodeResult(500);
-            }
+            _logic.Subscribe(User.GetId(), userId);
+            return Ok();
         }
 
         [Authorize]
         [HttpGet("friends/remove/{userId}")]
         public IActionResult RemoveFriend(int userId)
         {
-            try
-            {
-                var user = _db.Users.SingleOrDefault(x => x.Id == userId);
-                if (user == null)
-                {
-                    return NotFound();
-                }
-                var me = User.GetUser(_db);
-                _db.Entry(me).Collection(x => x.SubscribedTo).Load(); // to logic
-                me.SubscribedTo.Remove(user);
-                _db.SaveChanges();
-                return Ok();
-            }
-            catch
-            {
-                return new StatusCodeResult(500);
-            }
+            _logic.Remove(User.GetId(), userId);
+            return Ok();
         }
     }
 }

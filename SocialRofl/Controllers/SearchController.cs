@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SocialRofl.Data;
+using SocialRofl.Logic;
 using SocialRofl.Models;
 
 namespace SocialRofl.Controllers
@@ -8,51 +9,25 @@ namespace SocialRofl.Controllers
     [ApiController]
     public class SearchController : ControllerBase
     {
-        private DataContext _db;
+        private SearchLogic _logic;
 
-        public SearchController(DataContext db)
+        public SearchController(SearchLogic logic)
         {
-            _db = db;
+            _logic = logic;
         }
 
-        [HttpGet("search/user/username/{username}")]
-        public IActionResult SearchForUserUsername(string username)
+        [HttpGet("search/user")]
+        public IActionResult SearchUser(string name, string username)
         {
-            try
+            if (!string.IsNullOrEmpty(username))
             {
-                var users = _db.Users.Where(x => x.UserName.Contains(username)).Take(10); // to logic
-                return Ok(users.Select(x => new SearchUser
-                {
-                    FirstName = x.FirstName,
-                    LastName = x.LastName,
-                    Username = x.UserName,
-                    Id = x.Id
-                }));
+                return Ok(_logic.SearchUsername(username));
             }
-            catch
+            if (!string.IsNullOrEmpty(name))
             {
-                return new StatusCodeResult(500);
+                return Ok(_logic.SearchName(name));
             }
-        }
-
-        [HttpGet("search/user/name/{name}")]
-        public IActionResult SearchForUserName(string name)
-        {
-            try
-            {
-                var users = _db.Users.Where(x => (x.FirstName + " " + x.LastName).Contains(name)).Take(10); // to logic
-                return Ok(users.Select(x => new SearchUser
-                {
-                    FirstName = x.FirstName,
-                    LastName = x.LastName,
-                    Username = x.UserName,
-                    Id = x.Id
-                }));
-            }
-            catch
-            {
-                return new StatusCodeResult(500);
-            }
+            return BadRequest("No search parameters provided");
         }
     }
 }

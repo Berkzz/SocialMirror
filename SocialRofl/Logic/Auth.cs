@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using SocialRofl.Data;
+using SocialRofl.Exceptions;
 using SocialRofl.Models;
 using SocialRofl.Models.Database;
 using System.IdentityModel.Tokens.Jwt;
@@ -23,31 +24,33 @@ namespace SocialRofl.Logic
             _config = config;
         }
 
-        public RegisterResult Create(Register model)
+        public void Create(Register model)
         {
-            var result = _userManager.CreateAsync(new User
+            if (_db.Users.Any(x => x.UserName == model.UserName))
+            {
+                throw new UserAlreadyExistsException();
+            }
+            _userManager.CreateAsync(new User
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 CreatedTime = DateTime.Now,
                 UserName = model.UserName
-            }, model.Password).Result;
-            return new RegisterResult { Success = result.Succeeded };
+            }, model.Password).Wait();
         }
 
         public LoginResult Login(string userName, string password)
         {
             var user = _db.Users.SingleOrDefault(x => x.UserName == userName);
-            var badResult = new LoginResult { Success = false };
             if (user == null)
             {
-                return badResult;
+                throw new BadUserPasswordException();
             }
             if (_userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, password) == PasswordVerificationResult.Success)
             {
-                return new LoginResult { Success = true, Token = GenerateToken(user) };
+                return new LoginResult { Token = GenerateToken(user) };
             }
-            return badResult;
+            throw new BadUserPasswordException();
         }
 
         public string GenerateToken(User user)
