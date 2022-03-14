@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using SocialRofl.Data;
+﻿using Microsoft.AspNetCore.Mvc;
 using SocialRofl.Logic;
-using SocialRofl.Models;
 
 namespace SocialRofl.Controllers
 {

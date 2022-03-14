@@ -49,7 +49,7 @@ namespace SocialRofl.Logic
             var hash = _hashGenerator.GetAlphanumRandString(16);
             UploadFileToDisk(hash, Compress(file));
             var me = _db.Users.SingleOrDefault(x => x.Id == ownerId);
-            if(me == null)
+            if (me == null)
             {
                 throw new UserNotFoundException();
             }

@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SocialRofl.Data;
 using SocialRofl.Extensions;
 using SocialRofl.Logic;
 using SocialRofl.Models;
-using SocialRofl.Models.Database;
 
 namespace SocialRofl.Controllers
 {

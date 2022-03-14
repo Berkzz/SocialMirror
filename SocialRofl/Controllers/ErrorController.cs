@@ -15,10 +15,11 @@ namespace SocialRofl.Controllers
             var context = HttpContext.Features.Get<IExceptionHandlerFeature>();
             var exception = context.Error;
 
-            if(exception is ILogicException ex)
+            if (exception is ILogicException ex)
             {
                 return ex.GetActionResult();
-            } else
+            }
+            else
             {
                 return StatusCode(500);
             }

@@ -41,7 +41,7 @@ namespace SocialRofl.Extensions
 
             });
         }
-        
+
         public static void ConfigureIdentity(this IServiceCollection collection, IConfiguration config)
         {
             collection.AddIdentityCore<User>(options => options.Password = new PasswordOptions

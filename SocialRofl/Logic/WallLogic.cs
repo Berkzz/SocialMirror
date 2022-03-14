@@ -35,7 +35,7 @@ namespace SocialRofl.Logic
             _db.Posts.Add(dbPost);
             _db.SaveChanges();
         }
-        
+
         public IEnumerable<PostModel> GetUserPosts(int userId, int start, int count)
         {
             var posts = _db.Posts.Where(x => x.OwnerId == userId).Skip(start).Take(count);

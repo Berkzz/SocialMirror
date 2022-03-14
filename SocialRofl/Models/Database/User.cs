@@ -11,7 +11,7 @@ namespace SocialRofl.Models.Database
         [MaxLength(64)]
         public string LastName { get; set; } = null!;
         public DateTime CreatedTime { get; set; }
-        [Column(TypeName="date")]
+        [Column(TypeName = "date")]
         public DateTime? Birth { get; set; }
         public Photo? MainPhoto { get; set; }
         public ICollection<Photo> Photos { get; set; } = null!;

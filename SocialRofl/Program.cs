@@ -1,12 +1,5 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using SocialRofl.Data;
 using SocialRofl.Extensions;
-using SocialRofl.Interfaces;
-using SocialRofl.Models.Database;
-using System.Text;
-using Logic = SocialRofl.Logic;
 
 var builder = WebApplication.CreateBuilder(args);
 
