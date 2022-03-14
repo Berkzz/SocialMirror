@@ -2,6 +2,8 @@
 {
     public class NotFoundException : Exception
     {
+        public string Code { get; set; }
+
         public NotFoundException()
         {
         }

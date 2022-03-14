@@ -11,6 +11,12 @@
         {
         }
 
+        public PostNotFoundException(string message, string code)
+            : base(message)
+        {
+            Code = code;
+        }
+
         public PostNotFoundException(string message, Exception inner)
             : base(message, inner)
         {

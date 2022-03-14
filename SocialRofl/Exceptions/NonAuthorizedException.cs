@@ -2,6 +2,8 @@
 {
     public class NonAuthorizedException : Exception
     {
+        public string Code { get; set; }
+
         public NonAuthorizedException()
         {
         }

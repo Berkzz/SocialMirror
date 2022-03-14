@@ -22,7 +22,7 @@ namespace SocialRofl.Logic
             {
                 if (!_checker.Exists(attach.Type, attach.Hash))
                 {
-                    throw new BadAttachmentException("Bad attachment");
+                    throw new BadAttachmentException("Bad attachment", "BAD_ATTACHMENT");
                 }
             }
             var dbPost = new Post
@@ -55,7 +55,7 @@ namespace SocialRofl.Logic
             var post = _db.Posts.SingleOrDefault(x => x.Id == id);
             if (post == null)
             {
-                throw new PostNotFoundException("Post not found");
+                throw new PostNotFoundException("Post not found", "POST_NOT_FOUND");
             }
             return new PostModel
             {
@@ -73,11 +73,11 @@ namespace SocialRofl.Logic
             var post = _db.Posts.SingleOrDefault(x => x.Id == id);
             if (post == null)
             {
-                throw new PostNotFoundException("Post not found");
+                throw new PostNotFoundException("Post not found", "POST_NOT_FOUND");
             }
             if (post.OwnerId != currentUserId)
             {
-                throw new BadUserException("No permissions");
+                throw new BadUserException("No permissions", "NO_ACCESS");
             }
             _db.Posts.Remove(post);
             _db.SaveChanges();

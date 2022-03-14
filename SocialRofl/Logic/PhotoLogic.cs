@@ -39,19 +39,19 @@ namespace SocialRofl.Logic
         {
             if (file == null)
             {
-                throw new NullFileException("File not provided");
+                throw new NullFileException("File not provided", "NO_FILE");
             }
             var ext = Path.GetExtension(file.FileName);
             if (!AllowedExtensions.Contains(ext))
             {
-                throw new BadExtensionException($"Bad extension. Allowed: {string.Join(", ", AllowedExtensions)}");
+                throw new BadExtensionException($"Bad extension. Allowed: {string.Join(", ", AllowedExtensions)}", " BAD_EXTENSION");
             }
             var hash = _hashGenerator.GetAlphanumRandString(16);
             UploadFileToDisk(hash, Compress(file));
             var me = _db.Users.SingleOrDefault(x => x.Id == ownerId);
             if (me == null)
             {
-                throw new UserNotFoundException("User not found");
+                throw new UserNotFoundException("User not found", "USER_NOT_FOUND");
             }
             _db.Photos.Add(new Photo { Description = description, Hash = hash, User = me });
             _db.SaveChanges();
@@ -63,7 +63,7 @@ namespace SocialRofl.Logic
             var photo = _db.Photos.SingleOrDefault(x => x.Hash == hash);
             if (photo == null)
             {
-                throw new PhotoNotFoundException("Photo not found");
+                throw new PhotoNotFoundException("Photo not found", "PHOTO_NOT_FOUND");
             }
             var image = File.OpenRead($"{PhotosDirectory}/{hash}.jpeg");
             return image;
@@ -74,7 +74,7 @@ namespace SocialRofl.Logic
             var user = _db.Users.SingleOrDefault(x => x.Id == userId);
             if (user == null)
             {
-                throw new UserNotFoundException("User not found");
+                throw new UserNotFoundException("User not found", "USER_NOT_FOUND");
             }
             _db.Entry(user).Collection(x => x.Photos).Load();
             var photos = user.Photos.Select(x => x.Hash).ToList();

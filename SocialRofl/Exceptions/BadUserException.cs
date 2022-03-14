@@ -11,6 +11,12 @@
         {
         }
 
+        public BadUserException(string message, string code)
+            : base(message)
+        {
+            Code = code;
+        }
+
         public BadUserException(string message, Exception inner)
             : base(message, inner)
         {
