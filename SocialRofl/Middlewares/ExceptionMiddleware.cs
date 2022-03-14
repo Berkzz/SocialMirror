@@ -1,5 +1,4 @@
 ﻿using SocialRofl.Exceptions;
-using System.Text;
 
 namespace SocialRofl.Middlewares
 {
@@ -23,7 +22,7 @@ namespace SocialRofl.Middlewares
 
         private async Task ProcessException(HttpContext context, Exception exception)
         {
-            if(exception is NotFoundException notFound)
+            if (exception is NotFoundException notFound)
             {
                 await WriteCode(context, 404, notFound.Message);
                 return;

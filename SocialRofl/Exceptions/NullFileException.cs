@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SocialRofl.Interfaces;
-namespace SocialRofl.Exceptions
+﻿namespace SocialRofl.Exceptions
 {
     public class NullFileException : BadRequestException
     {
