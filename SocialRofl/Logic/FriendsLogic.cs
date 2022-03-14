@@ -18,7 +18,7 @@ namespace SocialRofl.Logic
             var user = _db.Users.SingleOrDefault(x => x.Id == userId);
             if (user == null)
             {
-                throw new UserNotFoundException();
+                throw new UserNotFoundException("User not found");
             }
             _db.Entry(user).Collection(x => x.Following).Load();
             _db.Entry(user).Collection(x => x.SubscribedTo).Load();
@@ -31,7 +31,7 @@ namespace SocialRofl.Logic
             var me = _db.Users.SingleOrDefault(x => x.Id == ownerId);
             if (user == null || me == null)
             {
-                throw new UserNotFoundException();
+                throw new UserNotFoundException("User not found");
             }
             _db.Entry(me).Collection(x => x.SubscribedTo).Load();
             me.SubscribedTo.Add(user);
@@ -44,7 +44,7 @@ namespace SocialRofl.Logic
             var me = _db.Users.SingleOrDefault(x => x.Id == ownerId);
             if (user == null || me == null)
             {
-                throw new UserNotFoundException();
+                throw new UserNotFoundException("User not found");
             }
             _db.Entry(me).Collection(x => x.SubscribedTo).Load();
             me.SubscribedTo.Remove(user);

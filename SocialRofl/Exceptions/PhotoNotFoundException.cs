@@ -3,11 +3,20 @@ using SocialRofl.Interfaces;
 
 namespace SocialRofl.Exceptions
 {
-    public class PhotoNotFoundException : Exception, ILogicException
+    public class PhotoNotFoundException : NotFoundException
     {
-        public IActionResult GetActionResult()
+        public PhotoNotFoundException()
         {
-            return ExceptionHelper.GetResult(404, "Photo not found");
+        }
+
+        public PhotoNotFoundException(string message)
+            : base(message)
+        {
+        }
+
+        public PhotoNotFoundException(string message, Exception inner)
+            : base(message, inner)
+        {
         }
     }
 }

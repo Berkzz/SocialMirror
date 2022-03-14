@@ -2,11 +2,20 @@
 using SocialRofl.Interfaces;
 namespace SocialRofl.Exceptions
 {
-    public class UserAlreadyExistsException : Exception, ILogicException
+    public class UserAlreadyExistsException : BadRequestException
     {
-        public IActionResult GetActionResult()
+        public UserAlreadyExistsException()
         {
-            return ExceptionHelper.GetResult(400, "Username already taken");
+        }
+
+        public UserAlreadyExistsException(string message)
+            : base(message)
+        {
+        }
+
+        public UserAlreadyExistsException(string message, Exception inner)
+            : base(message, inner)
+        {
         }
     }
 }

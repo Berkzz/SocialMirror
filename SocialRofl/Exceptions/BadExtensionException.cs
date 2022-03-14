@@ -3,18 +3,20 @@ using SocialRofl.Interfaces;
 
 namespace SocialRofl.Exceptions
 {
-    public class BadExtensionException : Exception, ILogicException
+    public class BadExtensionException : BadRequestException
     {
-        private string[] _exts;
-
-        public BadExtensionException(string[] exts)
+        public BadExtensionException()
         {
-            _exts = exts;
         }
 
-        public IActionResult GetActionResult()
+        public BadExtensionException(string message)
+            : base(message)
         {
-            return ExceptionHelper.GetResult(400, $"Bad extension. Allowed: {string.Join(", ", _exts)}");
+        }
+
+        public BadExtensionException(string message, Exception inner)
+            : base(message, inner)
+        {
         }
     }
 }

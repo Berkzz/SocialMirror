@@ -3,11 +3,20 @@ using SocialRofl.Interfaces;
 
 namespace SocialRofl.Exceptions
 {
-    public class BadUserException : Exception, ILogicException
+    public class BadUserException : NonAuthorizedException
     {
-        public IActionResult GetActionResult()
+        public BadUserException()
         {
-            return ExceptionHelper.GetResult(400, "Bad user");
+        }
+
+        public BadUserException(string message)
+            : base(message)
+        {
+        }
+
+        public BadUserException(string message, Exception inner)
+            : base(message, inner)
+        {
         }
     }
 }

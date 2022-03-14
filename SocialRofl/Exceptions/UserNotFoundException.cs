@@ -2,11 +2,20 @@
 using SocialRofl.Interfaces;
 namespace SocialRofl.Exceptions
 {
-    public class UserNotFoundException : Exception, ILogicException
+    public class UserNotFoundException : NotFoundException
     {
-        public IActionResult GetActionResult()
+        public UserNotFoundException()
         {
-            return ExceptionHelper.GetResult(404, "User not found");
+        }
+
+        public UserNotFoundException(string message)
+            : base(message)
+        {
+        }
+
+        public UserNotFoundException(string message, Exception inner)
+            : base(message, inner)
+        {
         }
     }
 }

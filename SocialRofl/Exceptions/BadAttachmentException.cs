@@ -3,11 +3,20 @@ using SocialRofl.Interfaces;
 
 namespace SocialRofl.Exceptions
 {
-    public class BadAttachmentException : Exception, ILogicException
+    public class BadAttachmentException : BadRequestException
     {
-        public IActionResult GetActionResult()
+        public BadAttachmentException()
         {
-            return ExceptionHelper.GetResult(400, "Bad attachment");
+        }
+
+        public BadAttachmentException(string message)
+            : base(message)
+        {
+        }
+
+        public BadAttachmentException(string message, Exception inner)
+            : base(message, inner)
+        {
         }
     }
 }

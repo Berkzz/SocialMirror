@@ -28,7 +28,7 @@ namespace SocialRofl.Logic
         {
             if (_db.Users.Any(x => x.UserName == model.UserName))
             {
-                throw new UserAlreadyExistsException();
+                throw new UserAlreadyExistsException("Username already taken");
             }
             _userManager.CreateAsync(new User
             {
@@ -44,13 +44,13 @@ namespace SocialRofl.Logic
             var user = _db.Users.SingleOrDefault(x => x.UserName == userName);
             if (user == null)
             {
-                throw new BadUserPasswordException();
+                throw new BadUserPasswordException("Password and username doesn't match");
             }
             if (_userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, password) == PasswordVerificationResult.Success)
             {
                 return new LoginResult { Token = GenerateToken(user) };
             }
-            throw new BadUserPasswordException();
+            throw new BadUserPasswordException("Password and username doesn't match");
         }
 
         public string GenerateToken(User user)

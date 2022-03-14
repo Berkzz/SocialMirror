@@ -2,11 +2,20 @@
 using SocialRofl.Interfaces;
 namespace SocialRofl.Exceptions
 {
-    public class PostNotFoundException : Exception, ILogicException
+    public class PostNotFoundException : NotFoundException
     {
-        public IActionResult GetActionResult()
+        public PostNotFoundException()
         {
-            return ExceptionHelper.GetResult(404, "Post not found");
+        }
+
+        public PostNotFoundException(string message)
+            : base(message)
+        {
+        }
+
+        public PostNotFoundException(string message, Exception inner)
+            : base(message, inner)
+        {
         }
     }
 }

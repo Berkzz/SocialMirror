@@ -2,11 +2,20 @@
 using SocialRofl.Interfaces;
 namespace SocialRofl.Exceptions
 {
-    public class NullFileException : Exception, ILogicException
+    public class NullFileException : BadRequestException
     {
-        public IActionResult GetActionResult()
+        public NullFileException()
         {
-            return ExceptionHelper.GetResult(400, "No file provided");
+        }
+
+        public NullFileException(string message)
+            : base(message)
+        {
+        }
+
+        public NullFileException(string message, Exception inner)
+            : base(message, inner)
+        {
         }
     }
 }

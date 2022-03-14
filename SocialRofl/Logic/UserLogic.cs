@@ -20,11 +20,11 @@ namespace SocialRofl.Logic
             var me = _db.Users.SingleOrDefault(x => x.Id == ownerId);
             if (photo == null)
             {
-                throw new PhotoNotFoundException();
+                throw new PhotoNotFoundException("Photo not found");
             }
             if (me == null)
             {
-                throw new UserNotFoundException();
+                throw new UserNotFoundException("User not found");
             }
             me.MainPhoto = photo;
             _db.SaveChanges();
@@ -35,7 +35,7 @@ namespace SocialRofl.Logic
             var user = _db.Users.Where(x => x.Id == userId).Include(x => x.MainPhoto).FirstOrDefault();
             if (user == null)
             {
-                throw new UserNotFoundException();
+                throw new UserNotFoundException("User not found");
             }
             return new UserView
             {

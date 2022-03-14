@@ -3,11 +3,20 @@ using SocialRofl.Interfaces;
 
 namespace SocialRofl.Exceptions
 {
-    public class BadUserPasswordException : Exception, ILogicException
+    public class BadUserPasswordException : BadRequestException
     {
-        public IActionResult GetActionResult()
+        public BadUserPasswordException()
         {
-            return ExceptionHelper.GetResult(400, "Username and password doesn't match");
+        }
+
+        public BadUserPasswordException(string message)
+            : base(message)
+        {
+        }
+
+        public BadUserPasswordException(string message, Exception inner)
+            : base(message, inner)
+        {
         }
     }
 }
